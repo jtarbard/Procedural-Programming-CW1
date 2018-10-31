@@ -5,69 +5,96 @@
  //add libraries
 #include <stdio.h>
 
-//declare variables
-float annualSalary, personalAllowance, taxableIncome, annual_salary, annualIncomeTax;
-int age;
-//global variables
-float monthly_tax;
+//declare argument variables
+float annualSalary, personalAllowance, taxableIncome, annual_salary, annualIncomeTax, annualNatInsurance;
+int age, menu_selection = 0;
+
+//declare additional variables
+float employee_count, total_money_paid, total_net_paid, minimum_income_tax, maximum_income_tax, monthly_net_pay;
+
+//additional function: compares and updates min/max income tax variables
+void update_company_stats() {
+  if(annualIncomeTax/12 > maximum_income_tax){
+    maximum_income_tax = annualIncomeTax/12;
+  }
+  else {
+    ;
+  }
+
+  if(annualIncomeTax/12 < minimum_income_tax || minimum_income_tax == 0){
+    minimum_income_tax = annualIncomeTax/12;
+  }
+  else {
+    ;
+  }
+}
 
 //Returns the personal allowance of a person with the given annual salary
 float compute_personal_allowance ( float annualSalary ) {
-     if(annualSalary < 100000) {
-       return 11850.0;
+     if(annualSalary < 100000) { //if salary under allowance threshhold
+       return 11850.0; //return allowance
      }
-     else if(annualSalary >= 123700) {
-       return 0.0;
+     else if(annualSalary >= 123700) { //if salary over cap
+       return 0.0; //return allowance
      }
-     else {
-       return 11850.0 - (annualSalary - 100000.0)/2.0;
+     else { //salary is under cap but over threshold
+       return 11850.0 - (annualSalary - 100000.0)/2.0; //return allowance
      }
 
 }
 
 //Returns the taxable income of a person with the given annual salary and personal allowance
 float compute_taxable_income(float annualSalary, float personalAllowance) {
-  if(annualSalary > 11850){
-    return annualSalary - personalAllowance;
+  if(annualSalary > 11850){ //if salary more than maximum personal allowance
+    return annualSalary - personalAllowance; //return taxable income
   }
-  else {
-    return 0;
+  else { //salary is less than maximum personal allowance
+    return 0; // return taxable income as 0
   }
 
 }
 
 //Returns the annual income tax of a person with the given taxable income
 float compute_annual_income_tax ( float taxableIncome ) {
-    if(taxableIncome <= 34500){
-      return taxableIncome*0.2;
+    if(taxableIncome <= 34500){ //if taxable income within band 1
+      return taxableIncome*0.2; //return yearly tax
     }
-    else if(taxableIncome >= 34501 && taxableIncome <= 150000){
-      return 34500*0.2 + (taxableIncome - 34500)*0.4;
+    else if(taxableIncome > 34500 && taxableIncome <= 150000){ //if taxable income within band 2
+      return 34500*0.2 + (taxableIncome - 34500.0)*0.4; //return yearly tax
     }
-    else if(taxableIncome > 150000) {
-      return 34500*0.2 + 115499*0.4 + (taxableIncome - 150000)*0.45;
+    else {  //taxable income within band 3
+      return 34500*0.2 + 115500*0.4 + (taxableIncome - 150000)*0.45; //return yearly tax
     }
 }
 
 //Returns the annual national insurance for a person with the given annual salary and age.
-float compute_annual_national_insurance ( float annual_salary, int age ) {
-    if(age <= 65 && annualSalary >= 8424){
-      if(annualSalary < 37926){
-        return annualSalary*0.12;
-      }
-      else {
-        return 37926*0.12 + (annualSalary - 37926)*0.02;
-      }
+float compute_annual_national_insurance ( float annualSalary, int age ) {
+  if(age >= 65) {
+    // printf("over 65");
+    return 0;
+  }
+  else if (annualSalary < 8424){
+      // printf("under threshold");
+    return 0;
+  }
+  else {
+      // printf("else is running");
+    if(annualSalary <= 46350){
+      // printf("%f\n", (annualSalary - 8424)*0.12);
+      return (annualSalary - 8424)*0.12;
     }
     else {
-      return 0;
+      // printf("%f\n", (annualSalary - 46350)*0.02 + ((46350 - 8424))*0.12);
+      return (annualSalary - 46350)*0.02 + ((46350 - 8424))*0.12;
     }
+  }
 }
 
 
 //Computes the monthly net pay of a person with the given annual salary, annual income tax, and annual national insurance
 float compute_monthly_net_pay ( float annualSalary, float annualIncomeTax, float annualNatInsurance ) {
-    return 0;
+    return (annualSalary/12 - annualIncomeTax/12 - annualNatInsurance/12); //return net monthly pay
+
 }
 
 
@@ -95,50 +122,75 @@ H.	The minimum national insurance contribution paid by any employee.
 hint: store the values into global variables, so that the function below can return them.
 */
 void add_person ( float annualSalary, int age ) {
+  employee_count = employee_count + 1;
   personalAllowance = compute_personal_allowance (annualSalary);
   taxableIncome = compute_taxable_income(annualSalary, personalAllowance);
-  monthly_tax = compute_annual_income_tax(taxableIncome);
-  printf("%f", monthly_tax);
-  printf("\n%f", monthly_tax/12);
-  printf("\n%f", compute_annual_national_insurance(annualSalary, age));
-//  annualIncomeTax = compute_annual_national_insurance (annual_salary, age);
+  annualIncomeTax = compute_annual_income_tax(taxableIncome);
+  annualNatInsurance = compute_annual_national_insurance(annualSalary, age);
+  update_company_stats();
+  monthly_net_pay = compute_monthly_net_pay(annualSalary, annualIncomeTax, annualNatInsurance);
+  total_net_paid = monthly_net_pay/employee_count;
+  total_money_paid = total_money_paid + (annualSalary/12);
+
+
 }
 
 
 //Returns the total money paid by the company to the employees entered
 //into the system through add_person()
 float get_total_money_paid() {
-
+  return total_money_paid;
 }
 
 //Returns the average net salary of all the employees entered into the
 //system through add_person()
 float get_average_net_salary() {
-
+  return 444;
 }
 
 //Returns the maximum income tax paid by any of the employees entered into the
 //system through add_person()
 float get_maximum_income_tax() {
-
+  return maximum_income_tax;
 }
 
 //Returns the minumum income tax paid by any of the employees entered into the
 //system through add_person()
 float get_minimum_income_tax() {
-
+  return minimum_income_tax;
 }
 
+int mymain () {
 
-int main () {
+  printf("Welcome To The Payroll Calcultor!\n");
+  while(menu_selection != 3) {
+   printf("Select Operation:\n1. Compute employee payroll\n2. Show company sums \n3. Quit program \n\nPlease enter choice: ");
+   scanf("%i", &menu_selection);
 
-  printf("Employees age: ");
-  scanf("%i", &age);
+    switch(menu_selection){
+      case 1:
+        printf("Employees age: ");
+        scanf("%i", &age);
 
-  printf("Employees gross salary: ");
-  scanf("%f", &annualSalary);
+        printf("Employees gross salary: ");
+        scanf("%f", &annualSalary);
 
-  add_person(annualSalary, age);
+        add_person(annualSalary, age);
+        break;
+      case 2:
+        get_total_money_paid();
+        get_average_net_salary();
+        get_maximum_income_tax();
+        get_minimum_income_tax();
+        break;
+      case 3:
+        printf("You have selected exit, goodbye!");;
+        break;
+      default:
+        printf("Menu item selection invalid, please input 1, 2 or 3.\n\n");
+        break;
+    }
+  }
 
 
     return 0;
