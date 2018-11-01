@@ -97,11 +97,11 @@ float compute_monthly_net_pay ( float annualSalary, float annualIncomeTax, float
 void print_payrol(){
   printf("Employee %i Payroll:\n", employee_count); //formatting
   printf("Employee Age: %i\n", age); //print age
-  printf("Annaual Salary: %f\n", annualSalary); //print annual salary
-  printf("Taxable Income: %f\n", taxableIncome); //print taxable income
-  printf("Monthly Income Tax: %f\n", annualIncomeTax/12); //print income tax
-  printf("Monthly NIC: %f\n", annualNatInsurance/12); //print nic
-  printf("Net Monthly Pay: %f\n", monthly_net_pay); //print net pay
+  printf("Annaual Salary: %.2f\n", annualSalary); //print annual salary
+  printf("Taxable Income: %.2f\n", taxableIncome); //print taxable income
+  printf("Monthly Income Tax: %.2f\n", annualIncomeTax/12); //print income tax
+  printf("Monthly NIC: %.2f\n", annualNatInsurance/12); //print nic
+  printf("Net Monthly Pay: %.2f\n", monthly_net_pay); //print net pay
 }
 
 /*Enters a person with a given annual salary and age into the system.
@@ -214,10 +214,10 @@ int main () {
       case 2: //show company sums
         if(employee_count > 0) {
           printf("Company Sums and Statistics:\n"); //formatting
-          printf("Total Monthly Salary Paid: %f\n", get_total_money_paid()); //print total money paid
-          printf("Average Net Salary: %f\n", get_average_net_salary()); //print average net salary
-          printf("Maximum Income Tax: %f\n", get_maximum_income_tax()); //print maximum income tax
-          printf("Minimum Income Tax: %f\n", get_minimum_income_tax()); //print minimum income tax
+          printf("Total Monthly Salary Paid: %.2f\n", get_total_money_paid()); //print total money paid
+          printf("Average Net Salary: %.2f\n", get_average_net_salary()); //print average net salary
+          printf("Maximum Income Tax: %.2f\n", get_maximum_income_tax()); //print maximum income tax
+          printf("Minimum Income Tax: %.2f\n", get_minimum_income_tax()); //print minimum income tax
         }
         else {
           printf("Error: No sums or statistics to show as no employees have been entered.\n"); //warning message
