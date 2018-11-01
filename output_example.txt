@@ -1,0 +1,77 @@
+Welcome To The Payroll Calcultor!
+-------------------------
+Select Operation:
+1. Compute Employee Payroll
+2. Show Company Sums & Stats 
+3. Quit Program 
+
+Operation Selection: 1
+-------------------------
+Employees age: 33
+Employees gross salary: 55000
+-------------------------
+Employee 1 Payroll:
+Employee Age: 33
+Annaual Salary: 55000.000000
+Taxable Income: 43150.000000
+Monthly Income Tax: 863.333333
+Monthly NIC: 393.676676
+Net Monthly Pay: 3326.323242
+-------------------------
+Select Operation:
+1. Compute Employee Payroll
+2. Show Company Sums & Stats 
+3. Quit Program 
+
+Operation Selection: 1
+-------------------------
+Employees age: 24
+Employees gross salary: 28000
+-------------------------
+Employee 2 Payroll:
+Employee Age: 24
+Annaual Salary: 28000.000000
+Taxable Income: 16150.000000
+Monthly Income Tax: 269.166667
+Monthly NIC: 195.760010
+Net Monthly Pay: 1868.406616
+-------------------------
+Select Operation:
+1. Compute Employee Payroll
+2. Show Company Sums & Stats 
+3. Quit Program 
+
+Operation Selection: 1
+-------------------------
+Employees age: 25
+Employees gross salary: 30000
+-------------------------
+Employee 3 Payroll:
+Employee Age: 25
+Annaual Salary: 30000.000000
+Taxable Income: 18150.000000
+Monthly Income Tax: 302.500000
+Monthly NIC: 215.760010
+Net Monthly Pay: 1981.739990
+-------------------------
+Select Operation:
+1. Compute Employee Payroll
+2. Show Company Sums & Stats 
+3. Quit Program 
+
+Operation Selection: 2
+-------------------------
+Company Sums and Statistics:
+Total Monthly Salary Paid: 9416.666992
+Average Net Salary: 2392.156576
+Maximum Income Tax: 863.333313
+Minimum Income Tax: 269.166656
+-------------------------
+Select Operation:
+1. Compute Employee Payroll
+2. Show Company Sums & Stats 
+3. Quit Program 
+
+Operation Selection: 3
+-------------------------
+You have selected exit, goodbye!
