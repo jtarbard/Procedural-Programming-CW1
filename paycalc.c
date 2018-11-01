@@ -10,21 +10,22 @@ float annualSalary, personalAllowance, taxableIncome, annual_salary, annualIncom
 int age, menu_selection = 0;
 
 //declare additional variables
-float employee_count, total_money_paid, total_net_paid, minimum_income_tax = 100000000, maximum_income_tax, monthly_net_pay;
+float total_money_paid, total_net_paid, minimum_income_tax = 100000000, maximum_income_tax, monthly_net_pay;
+int employee_count;
 
 //additional function: compares and updates min/max income tax variables
 void update_company_stats() {
-  if(annualIncomeTax/12 < minimum_income_tax){
-    minimum_income_tax = annualIncomeTax/12;
+  if(annualIncomeTax/12 < minimum_income_tax){ //if tax is smaller than current minimum
+    minimum_income_tax = annualIncomeTax/12; //set minimum to current tax
   }
   else {
-    ;
+    ; //pass
   }
-  if(annualIncomeTax/12 > maximum_income_tax){
-    maximum_income_tax = annualIncomeTax/12;
+  if(annualIncomeTax/12 > maximum_income_tax){ //if tax is larger than current maximum
+    maximum_income_tax = annualIncomeTax/12; //set maximum to current tax
   }
   else {
-    ;
+    ; //pass
   }
 
 }
@@ -69,18 +70,18 @@ float compute_annual_income_tax ( float taxableIncome ) {
 
 //Returns the annual national insurance for a person with the given annual salary and age.
 float compute_annual_national_insurance ( float annualSalary, int age ) {
-  if(age >= 65) {
-    return 0;
+  if(age >= 65) { //if emoloyee 65 or over
+    return 0; //return 0 nic
   }
-  else if (annualSalary < 8424){
-    return 0;
+  else if (annualSalary < 8424){ //if employee earns below threshold
+    return 0; //return 0 nic
   }
   else {
-    if(annualSalary <= 46350){
-      return (annualSalary - 8424)*0.12;
+    if(annualSalary <= 46350){ //if salary within band 1
+      return (annualSalary - 8424)*0.12; //return nic
     }
-    else {
-      return (annualSalary - 46350)*0.02 + ((46350 - 8424))*0.12;
+    else { //salary is above band 1
+      return (annualSalary - 46350)*0.02 + ((46350 - 8424))*0.12; //return nic
     }
   }
 }
@@ -92,6 +93,16 @@ float compute_monthly_net_pay ( float annualSalary, float annualIncomeTax, float
 
 }
 
+//additional function prints the employees Payroll
+void print_payrol(){
+  printf("Employee %i Payroll:\n", employee_count); //formatting
+  printf("Employee Age: %i\n", age); //print age
+  printf("Annaual Salary: %f\n", annualSalary); //print annual salary
+  printf("Taxable Income: %f\n", taxableIncome); //print taxable income
+  printf("Monthly Income Tax: %f\n", annualIncomeTax/12); //print income tax
+  printf("Monthly NIC: %f\n", annualNatInsurance/12); //print nic
+  printf("Net Monthly Pay: %f\n", monthly_net_pay); //print net pay
+}
 
 /*Enters a person with a given annual salary and age into the system.
 
@@ -117,16 +128,26 @@ H.	The minimum national insurance contribution paid by any employee.
 hint: store the values into global variables, so that the function below can return them.
 */
 void add_person ( float annualSalary, int age ) {
+  //employee added increment count
   employee_count = employee_count + 1;
+  //calculate personal allowance
   personalAllowance = compute_personal_allowance (annualSalary);
+  //calculate taxable income
   taxableIncome = compute_taxable_income(annualSalary, personalAllowance);
+  //calculate annual income tax
   annualIncomeTax = compute_annual_income_tax(taxableIncome);
+  //calculate annaual nation insurance
   annualNatInsurance = compute_annual_national_insurance(annualSalary, age);
+  //update min/max income tax
   update_company_stats();
+  //calculate monthly net pay
   monthly_net_pay = compute_monthly_net_pay(annualSalary, annualIncomeTax, annualNatInsurance);
+  //update total net pay
   total_net_paid = total_net_paid + monthly_net_pay;
+  //update total salaray paid
   total_money_paid = total_money_paid + (annualSalary/12);
-
+  //print employee Payroll
+  print_payrol();
 
 }
 
@@ -134,74 +155,81 @@ void add_person ( float annualSalary, int age ) {
 //Returns the total money paid by the company to the employees entered
 //into the system through add_person()
 float get_total_money_paid() {
-  return total_money_paid;
+  return total_money_paid; //return total salary paid
 }
 
 //Returns the average net salary of all the employees entered into the
 //system through add_person()
 float get_average_net_salary() {
-  return total_net_paid/employee_count;
+  return total_net_paid/employee_count; //reutrn total net salary
 }
 
 //Returns the maximum income tax paid by any of the employees entered into the
 //system through add_person()
 float get_maximum_income_tax() {
-  return maximum_income_tax;
+  return maximum_income_tax; //return maximum income tax
 }
 
 //Returns the minumum income tax paid by any of the employees entered into the
 //system through add_person()
 float get_minimum_income_tax() {
-  return minimum_income_tax;
+  return minimum_income_tax; //return minimum income tax
 }
 
-//addition function
+//addition function checks that input values are valid
 int parse_input() {
-  if(age > 0 && annualSalary >= 0){
-    return 1;
+  if(age > 0 && annualSalary >= 0){ //if inputs are positive
+    return 1; //return true
   }
   else {
-    return 0;
+    return 0; //return false
   }
 }
 
-int mymain () {
+int main () {
 
-  printf("Welcome To The Payroll Calcultor!\n");
-  while(menu_selection != 3) {
-   printf("Select Operation:\n1. Compute employee payroll\n2. Show company sums \n3. Quit program \n\nPlease enter choice: ");
-   scanf("%i", &menu_selection);
-
+  printf("Welcome To The Payroll Calcultor!\n"); //greet user
+  //menu while loop
+  while(menu_selection != 3) { //while menu selection isnt quit
+    printf("-------------------------\n"); //formatting
+    printf("Select Operation:\n1. Compute Employee Payroll\n2. Show Company Sums & Stats \n3. Quit Program \n\nOperation Selection: "); //print menu options
+    scanf("%i", &menu_selection); //scan menu selection
+    printf("-------------------------\n"); //formatting
+    //menu selection statement
     switch(menu_selection){
-      case 1:
-        printf("Employees age: ");
-        scanf("%i", &age);
+      case 1: // compute employee payroll
+        printf("Employees age: "); //ask for employees age
+        scanf("%i", &age); //scan employees age
 
-        printf("Employees gross salary: ");
-        scanf("%f", &annualSalary);
-
-        if(parse_input() == 1){
-          add_person(annualSalary, age);
+        printf("Employees gross salary: "); //ask for employees salary
+        scanf("%f", &annualSalary); //scan employees age
+        printf("-------------------------\n"); //formatting
+        if(parse_input() == 1){ //if input validation returns true
+          add_person(annualSalary, age); //run add person
+        }
+        else { //input validation returned false
+          printf("Error: Age or salary input invalid; please make sure values are numerical and positive.\n"); //invalid input warning
+        }
+        break;
+      case 2: //show company sums
+        if(employee_count > 0) {
+          printf("Company Sums and Statistics:\n"); //formatting
+          printf("Total Monthly Salary Paid: %f\n", get_total_money_paid()); //print total money paid
+          printf("Average Net Salary: %f\n", get_average_net_salary()); //print average net salary
+          printf("Maximum Income Tax: %f\n", get_maximum_income_tax()); //print maximum income tax
+          printf("Minimum Income Tax: %f\n", get_minimum_income_tax()); //print minimum income tax
         }
         else {
-          printf("Age or salary input invalid; please make sure values are numerical and positive.");
+          printf("Error: No sums or statistics to show as no employees have been entered.\n"); //warning message
         }
         break;
-      case 2:
-        get_total_money_paid();
-        get_average_net_salary();
-        get_maximum_income_tax();
-        get_minimum_income_tax();
+      case 3: //exit program
+        printf("You have selected exit, goodbye!\n"); //print exit message
         break;
-      case 3:
-        printf("You have selected exit, goodbye!");;
-        break;
-      default:
-        printf("Menu item selection invalid, please input 1, 2 or 3.\n\n");
+      default: //menu selection invalid
+        printf("Error: Menu item selection invalid, please input 1, 2 or 3.\n"); //print error warning message
         break;
     }
   }
-
-
     return 0;
 }
